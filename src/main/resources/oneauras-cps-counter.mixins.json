@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.oneaura.cpscounter.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"MouseMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

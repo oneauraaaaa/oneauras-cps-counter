@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "oneauras-cps-counter",
+	"version": "${version}",
+	"name": "oneaura's CPS Counter",
+	"description": "cool mod by cool person",
+	"authors": [
+		"oneaura"
+	],
+	"contact": {
+		"homepage": "https://guns.lol/oneaura",
+		"sources": "https://guns.lol/oneaura"
+	},
+	"license": "MIT",
+	"icon": "assets/oneauras-cps-counter/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.oneaura.cpscounter.OneaurasCPSCounter"
+		],
+        "client": [
+            "com.oneaura.cpscounter.OneaurasCPSCounterClient"
+        ]
+	},
+	"mixins": [
+		"oneauras-cps-counter.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.2",
+		"minecraft": "~1.21.8",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}

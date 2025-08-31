@@ -5,32 +5,34 @@ import java.util.List;
 
 public class CPSManager {
 
-    // Her tıklamanın milisaniye cinsinden zamanını saklayacağımız liste.
-    private static final List<Long> clicks = new ArrayList<>();
+    private static final List<Long> leftClicks = new ArrayList<>();
+    private static final List<Long> rightClicks = new ArrayList<>();
 
-    /**
-     * Her tıklandığında bu metot çağrılır ve o anın zamanını listeye ekler.
-     */
-    public static void recordClick() {
-        clicks.add(System.currentTimeMillis());
+    // Sol tıklama anını listeye ekler.
+    public static void recordLeftClick() {
+        leftClicks.add(System.currentTimeMillis());
     }
 
-    /**
-     * Bu metot oyunun her anında (tick) çalıştırılır.
-     * Listeyi kontrol eder ve 1000 milisaniyeden (1 saniye) eski olan tıklamaları temizler.
-     */
+    // Sağ tıklama anını listeye ekler.
+    public static void recordRightClick() {
+        rightClicks.add(System.currentTimeMillis());
+    }
+
+    // Listeleri güncel tutar, 1 saniyeden eski tıklamaları siler.
     public static void tick() {
         long currentTime = System.currentTimeMillis();
-        clicks.removeIf(time -> time < currentTime - 1000);
+        leftClicks.removeIf(time -> time < currentTime - 1000);
+        rightClicks.removeIf(time -> time < currentTime - 1000);
     }
 
-    /**
-     * O an listede kaç tane tıklama kaydı varsa onun sayısını döndürür.
-     * Bu bizim anlık CPS değerimizdir.
-     * @return Anlık saniye başına tıklama sayısı.
-     */
-    public static int getCPS() {
-        return clicks.size();
+    // Anlık sol tık CPS değerini döndürür.
+    public static int getLeftCPS() {
+        return leftClicks.size();
+    }
+
+    // Anlık sağ tık CPS değerini döndürür.
+    public static int getRightCPS() {
+        return rightClicks.size();
     }
 }
 

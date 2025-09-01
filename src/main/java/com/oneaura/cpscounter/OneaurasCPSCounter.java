@@ -11,6 +11,6 @@ public class OneaurasCPSCounter implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("your mom");
+		LOGGER.info("cps counter says your mom");
 	}
 }

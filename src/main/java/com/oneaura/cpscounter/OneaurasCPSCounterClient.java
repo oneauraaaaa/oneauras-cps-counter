@@ -26,10 +26,15 @@ public class OneaurasCPSCounterClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        LOGGER.info("cps counter goess brrrrrrrrrr");
+        LOGGER.info("CPS Counter is initializing!");
 
-        configFile = new File(MinecraftClient.getInstance().runDirectory, "config/cpscounter.properties");
-        loadConfig();
+        // Config dosyasının yolunu ayarla ve log'a yazdır
+        File runDir = MinecraftClient.getInstance().runDirectory;
+        LOGGER.info("Minecraft run directory: {}", runDir.getAbsolutePath());
+        configFile = new File(runDir, "config/cpscounter.properties");
+        LOGGER.info("Config file path set to: {}", configFile.getAbsolutePath());
+
+        loadConfig(); // Ayarları dosyadan yükle
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> CPSManager.tick());
 
@@ -76,28 +81,42 @@ public class OneaurasCPSCounterClient implements ClientModInitializer {
     }
 
     public static void loadConfig() {
+        LOGGER.info("Attempting to load config file...");
         Properties properties = new Properties();
         if (configFile.exists()) {
+            LOGGER.info("Config file found. Reading properties...");
             try (FileInputStream stream = new FileInputStream(configFile)) {
                 properties.load(stream);
                 String positionFromFile = properties.getProperty("position", "TOP_LEFT");
                 hudPosition = HudPosition.valueOf(positionFromFile.toUpperCase());
+                LOGGER.info("Config loaded successfully. Position set to {}.", hudPosition);
             } catch (IOException | IllegalArgumentException e) {
                 LOGGER.error("Could not load config file, using defaults.", e);
             }
         } else {
+            LOGGER.info("Config file not found. Creating a new one with default values...");
             saveConfig();
         }
     }
 
     public static void saveConfig() {
+        LOGGER.info("Attempting to save config file...");
         Properties properties = new Properties();
         properties.setProperty("position", hudPosition.name());
         try (FileOutputStream stream = new FileOutputStream(configFile)) {
-            configFile.getParentFile().mkdirs();
+            File parentDir = configFile.getParentFile();
+            if (!parentDir.exists()) {
+                LOGGER.info("Config directory does not exist. Creating directory: {}", parentDir.getAbsolutePath());
+                if (parentDir.mkdirs()) {
+                    LOGGER.info("Config directory created successfully.");
+                } else {
+                    LOGGER.error("FAILED TO CREATE CONFIG DIRECTORY!");
+                }
+            }
             properties.store(stream, "CPS Counter Config | Available positions: TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT");
+            LOGGER.info("Config file saved successfully to {}.", configFile.getAbsolutePath());
         } catch (IOException e) {
-            LOGGER.error("Could not save config file.", e);
+            LOGGER.error("COULD NOT SAVE CONFIG FILE.", e);
         }
     }
 }

@@ -6,10 +6,10 @@ import com.oneaura.cpscounter.configlib.ConfigHolder;
 
 public class CPSConfig extends ConfigHolder {
 
-    @Comment("CPS Sayacı ekranda görünsün mü?")
+    @Comment("Do you want to enable CPS Counter?")
     public boolean enabled = true;
 
-    @Comment("Sayacın ekrandaki konumu.")
+    @Comment("HUD Position")
     public OneaurasCPSCounterClient.HudPosition hudPosition = OneaurasCPSCounterClient.HudPosition.TOP_LEFT;
 
 }

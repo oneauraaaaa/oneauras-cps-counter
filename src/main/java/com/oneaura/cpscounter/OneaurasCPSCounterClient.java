@@ -45,7 +45,12 @@ public class OneaurasCPSCounterClient implements ClientModInitializer {
             if (client.player != null && client.currentScreen == null) {
                 int leftCPS = CPSManager.getLeftCPS();
                 int rightCPS = CPSManager.getRightCPS();
-                String textToRender = leftCPS + " | " + rightCPS + " CPS";
+                String textToRender;
+                if (config.showLabel) {
+                    textToRender = leftCPS + " | " + rightCPS + " CPS";
+                } else {
+                    textToRender = leftCPS + " | " + rightCPS;
+                }
                 int textWidth = client.textRenderer.getWidth(textToRender);
 
                 int x, y;

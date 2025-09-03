@@ -12,4 +12,7 @@ public class CPSConfig extends ConfigHolder {
     @Comment("HUD Position")
     public OneaurasCPSCounterClient.HudPosition hudPosition = OneaurasCPSCounterClient.HudPosition.TOP_LEFT;
 
+    @Comment("Do you want to see the 'CPS' label?")
+    public boolean showLabel = true;
+
 }

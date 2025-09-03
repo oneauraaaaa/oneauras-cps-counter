@@ -11,6 +11,8 @@ import net.minecraft.client.gui.DrawContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// git wait
+
 public class OneaurasCPSCounterClient implements ClientModInitializer {
 
     // Yeni eklenenler

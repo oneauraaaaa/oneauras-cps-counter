@@ -21,6 +21,9 @@
 		],
         "client": [
             "com.oneaura.cpscounter.OneaurasCPSCounterClient"
+        ],
+        "modmenu": [
+          "com.oneaura.cpscounter.config.CPSModMenuIntegration"
         ]
 	},
 	"mixins": [
@@ -30,6 +33,8 @@
 		"fabricloader": ">=0.17.2",
 		"minecraft": "~1.21.8",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+        "modmenu": ">=15.0.0",
+        "cloth-config": ">=19.0.147+fabric"
 	}
 }

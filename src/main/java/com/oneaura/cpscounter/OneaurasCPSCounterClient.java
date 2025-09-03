@@ -24,6 +24,10 @@ public class OneaurasCPSCounterClient implements ClientModInitializer {
         TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
     }
 
+    public enum TextStyle {
+        NONE, BOLD, ITALIC, UNDERLINED
+    }
+
     @Override
     public void onInitializeClient() {
         LOGGER.info("CPS Counter is initializing!");
@@ -51,38 +55,81 @@ public class OneaurasCPSCounterClient implements ClientModInitializer {
                 } else {
                     textToRender = leftCPS + " | " + rightCPS;
                 }
+
                 int textWidth = client.textRenderer.getWidth(textToRender);
+                int padding = config.padding; // Ayarlardan padding değerini al
 
                 int x, y;
                 int screenWidth = client.getWindow().getScaledWidth();
                 int screenHeight = client.getWindow().getScaledHeight();
 
-                // Konumu yeni ayar dosyasından oku
                 switch (config.hudPosition) {
                     case TOP_RIGHT:
-                        x = screenWidth - textWidth - 5;
-                        y = 5;
+                        x = screenWidth - textWidth - padding;
+                        y = padding;
                         break;
                     case BOTTOM_LEFT:
-                        x = 5;
-                        y = screenHeight - 15;
+                        x = padding;
+                        y = screenHeight - 10 - padding;
                         break;
                     case BOTTOM_RIGHT:
-                        x = screenWidth - textWidth - 5;
-                        y = screenHeight - 15;
+                        x = screenWidth - textWidth - padding;
+                        y = screenHeight - 10 - padding;
                         break;
                     case TOP_LEFT:
                     default:
-                        x = 5;
-                        y = 5;
+                        x = padding;
+                        y = padding;
                         break;
                 }
 
-                int textColor = 0xFFFFFFFF;
-                int backgroundColor = 0x80000000;
+                switch (config.textStyle) {
+                    case BOLD:
+                        textToRender = "§l" + textToRender;
+                        break;
+                    case ITALIC:
+                        textToRender = "§o" + textToRender;
+                        break;
+                    case UNDERLINED:
+                        textToRender = "§n" + textToRender;
+                        break;
+                    case NONE:
+                    default:
+                        // Do nothing
+                        break;
+                }
 
-                drawContext.fill(x - 1, y - 1, x + textWidth + 1, y + 10, backgroundColor);
-                drawContext.drawText(client.textRenderer, textToRender, x, y, textColor, false);
+                int textColor;
+                try {
+                    textColor = 0xFF000000 | Integer.parseInt(config.textColor.trim(), 16);
+                } catch (NumberFormatException e) {
+                    textColor = 0xFFFFFFFF; //
+                }
+                if (config.showBackground) {
+                    int backgroundColor;
+                    try {
+                        backgroundColor = (int) Long.parseLong(config.backgroundColor.trim(), 16);
+                    } catch (NumberFormatException e) {
+                        backgroundColor = 0x80000000; // Varsayılan: Yarı şeffaf siyah
+                    }
+
+                    int x1 = x - 2;
+                    int y1 = y - 2;
+                    int x2 = x + textWidth + 2;
+                    int y2 = y + 10;
+                    int radius = config.backgroundCornerRadius;
+
+                    if (radius <= 0) {
+                        drawContext.fill(x1, y1, x2, y2, backgroundColor);
+                    } else {
+                        // Yumuşak kenarlı dikdörtgen çizimi
+                        drawContext.fill(x1 + radius, y1, x2 - radius, y2, backgroundColor); // Orta dikey bölüm
+                        drawContext.fill(x1, y1 + radius, x1 + radius, y2 - radius, backgroundColor); // Sol bölüm
+                        drawContext.fill(x2 - radius, y1 + radius, x2, y2 - radius, backgroundColor); // Sağ bölüm
+                    }
+                }
+
+                drawContext.drawText(client.textRenderer, textToRender, x, y, textColor, config.textShadow);
             }
         });
     }

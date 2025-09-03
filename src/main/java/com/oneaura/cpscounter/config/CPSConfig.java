@@ -4,8 +4,6 @@ import com.oneaura.cpscounter.OneaurasCPSCounterClient; // Ana sınıfı import 
 import com.oneaura.cpscounter.configlib.Comment;
 import com.oneaura.cpscounter.configlib.ConfigHolder;
 
-// hold up git 
-
 public class CPSConfig extends ConfigHolder {
 
     @Comment("Do you want to enable CPS Counter?")

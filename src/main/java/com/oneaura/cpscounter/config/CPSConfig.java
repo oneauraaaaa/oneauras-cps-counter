@@ -12,8 +12,11 @@ public class CPSConfig extends ConfigHolder {
     @Comment("The position of the counter on the screen.")
     public OneaurasCPSCounterClient.HudPosition hudPosition = OneaurasCPSCounterClient.HudPosition.TOP_LEFT;
 
-    @Comment("Show the 'CPS' label next to the numbers.")
-    public boolean showLabel = true;
+    @Comment("The custom text label to show after the numbers. Leave blank to hide.")
+    public String labelText = " CPS";
+
+    //@Comment("Show the 'CPS' label next to the numbers.")
+    //public boolean showLabel = true;
 
     @Comment("The color of the text as a Hex code (e.g., FFFFFF for white).")
     public String textColor = "FFFFFF";

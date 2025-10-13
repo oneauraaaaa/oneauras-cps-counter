@@ -20,8 +20,8 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modImplementation "maven.modrinth:cloth-config:19.0.147+fabric"
-    modImplementation "maven.modrinth:modmenu:15.0.0"
+    modImplementation "maven.modrinth:cloth-config:${project.cloth_config_version}"
+    modCompileOnly "maven.modrinth:modmenu:${project.modmenu_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
     modApi include("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")

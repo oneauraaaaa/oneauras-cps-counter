@@ -5,8 +5,7 @@
 	"name": "oneaura's CPS Counter",
 	"description": "cool mod by cool person",
 	"authors": [
-		"oneaura",
-        "Eymistaken"
+		"oneaura"
 	],
 	"contact": {
 		"homepage": "https://github.com/oneauraaaaa/oneauras-cps-counter",
@@ -14,7 +13,7 @@
 	},
 	"license": "MIT",
 	"icon": "assets/oneauras-cps-counter/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"main": [
 			"com.oneaura.cpscounter.OneaurasCPSCounter"
@@ -31,10 +30,12 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.17.2",
-		"minecraft": "~1.21.8",
+		"minecraft": "1.21.x",
 		"java": ">=21",
 		"fabric-api": "*",
-        "modmenu": ">=15.0.0",
-        "cloth-config": ">=19.0.147+fabric"
-	}
+        "cloth-config": ">=15.0.127+fabric <=20.0.148+fabric"
+	},
+    "suggests": {
+        "modmenu": ">=15.0.0"
+    }
 }

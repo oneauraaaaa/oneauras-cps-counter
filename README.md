@@ -1,5 +1,5 @@
 ## **Summary**
-A CPS counter mod that I made for the latest version of Minecraft 1.21.8, I would be really happy if you downloaded it, or contribute to the project via GitHub, anyways. Have a good day!
+A CPS counter mod that I made for the latest version of Minecraft 1.21.11, I would be really happy if you downloaded it, or contribute to the project via GitHub, anyways. Have a good day!
 
 ## **Personalization**
 - In-Game Config Screen for all settings.

@@ -3,13 +3,13 @@
 	"id": "oneauras-cps-counter",
 	"version": "${version}",
 	"name": "oneaura's CPS Counter",
-	"description": "cool mod by cool person",
+	"description": "CPS Counter for the latest versions!",
 	"authors": [
 		"oneaura"
 	],
 	"contact": {
-		"homepage": "https://github.com/oneauraaaaa/oneauras-cps-counter",
-		"sources": "https://github.com/oneauraaaaa/oneauras-cps-counter"
+		"homepage": "https://github.com/oneauraaa/oneauras-cps-counter",
+		"sources": "https://github.com/oneauraaaa/oneauras-cps-counter"
 	},
 	"license": "MIT",
 	"icon": "assets/oneauras-cps-counter/icon.png",
@@ -18,24 +18,24 @@
 		"main": [
 			"com.oneaura.cpscounter.OneaurasCPSCounter"
 		],
-        "client": [
-            "com.oneaura.cpscounter.OneaurasCPSCounterClient"
-        ],
-        "modmenu": [
-          "com.oneaura.cpscounter.config.CPSModMenuIntegration"
-        ]
+		"client": [
+			"com.oneaura.cpscounter.OneaurasCPSCounterClient"
+		],
+		"modmenu": [
+			"com.oneaura.cpscounter.config.CPSModMenuIntegration"
+		]
 	},
 	"mixins": [
 		"oneauras-cps-counter.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.18.1",
-		"minecraft": ">=1.21.10",
+		"fabricloader": ">=0.16.0",
+		"minecraft": ">=1.21.9",
 		"java": ">=21",
 		"fabric-api": "*",
-        "cloth-config": ">=15.0.127+fabric <=21.11.153+fabric"
+		"cloth-config": ">=15.0.127+fabric <=21.11.153+fabric"
 	},
-    "suggests": {
-        "modmenu": ">=15.0.0"
-    }
+	"suggests": {
+		"modmenu": "*"
+	}
 }

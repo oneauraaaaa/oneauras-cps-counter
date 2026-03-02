@@ -1,41 +1,44 @@
 package com.oneaura.cpscounter.config;
 
-import com.oneaura.cpscounter.OneaurasCPSCounterClient; // Ana sınıfı import ediyoruz
+import com.oneaura.cpscounter.OneaurasCPSCounterClient;
 import com.oneaura.cpscounter.configlib.Comment;
 import com.oneaura.cpscounter.configlib.ConfigHolder;
 
 public class CPSConfig extends ConfigHolder {
 
-    @Comment("Enable or disable the CPS Counter on the screen.")
+    @Comment("Enable Or Disable The CPS Counter On The Screen.")
     public boolean enabled = true;
 
-    @Comment("The position of the counter on the screen.")
-    public OneaurasCPSCounterClient.HudPosition hudPosition = OneaurasCPSCounterClient.HudPosition.TOP_LEFT;
+    @Comment("The X Position Of The Counter On The Screen, In Pixels.")
+    public int hudX = 5;
 
-    @Comment("The custom text label to show after the numbers. Leave blank to hide.")
+    @Comment("The Y Position Of The Counter On The Screen, In Pixels.")
+    public int hudY = 5;
+
+    @Comment("The Custom Text Label To Show After The Numbers. Leave Blank To Hide.")
     public String labelText = " CPS";
 
-    //@Comment("Show the 'CPS' label next to the numbers.")
-    //public boolean showLabel = true;
+    // @Comment("Show The 'CPS' Label Next To The Numbers.")
+    // public boolean showLabel = true;
 
-    @Comment("The color of the text as a Hex code (e.g., FFFFFF for white).")
+    @Comment("The Color Of The Text As A Hex Code (e.g., FFFFFF For White).")
     public String textColor = "FFFFFF";
 
-    @Comment("Show the background.")
+    @Comment("Show The Background.")
     public boolean showBackground = true;
 
-    @Comment("Show text shadow.")
+    @Comment("Show Text Shadow.")
     public boolean textShadow = true;
 
-    @Comment("The style of the text (e.g., bold, italic).")
+    @Comment("The Style Of The Text (e.g., Bold, Italic).")
     public OneaurasCPSCounterClient.TextStyle textStyle = OneaurasCPSCounterClient.TextStyle.NONE;
 
-    @Comment("The color and opacity of the background as a Hex code (e.g., 80000000 for semi-transparent black).")
+    @Comment("The Color And Opacity Of The Background As A Hex Code (e.g., 80000000 For Semi-Transparent Black).")
     public String backgroundColor = "80000000";
 
-    @Comment("The padding (space) between the text and the edge of the screen, in pixels.")
+    @Comment("The Padding (Space) Between The Text And The Edge Of The Screen, In Pixels.")
     public int padding = 5;
 
-    @Comment("The corner radius for the background, in pixels. Set to 0 for sharp corners.")
+    @Comment("The Corner Radius For The Background, In Pixels. Set To 0 For Sharp Corners.")
     public int backgroundCornerRadius = 0;
 }

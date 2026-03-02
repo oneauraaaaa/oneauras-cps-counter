@@ -1,30 +1,35 @@
 package com.oneaura.cpscounter.configlib.gui;
 
+import com.oneaura.cpscounter.config.HudPositionScreen;
 import com.oneaura.cpscounter.configlib.Comment;
 import com.oneaura.cpscounter.configlib.ConfigHolder;
 import com.oneaura.cpscounter.configlib.ConfigManager;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
 import java.lang.reflect.Field;
 import java.util.Optional;
+import java.util.Set;
 
 public class ClothConfigScreenBuilder {
+
+    // Fields managed by the drag screen — hidden from normal config entries
+    private static final Set<String> HIDDEN_FIELDS = Set.of("hudX", "hudY");
 
     public static Screen create(Screen parent, String modId) {
         ConfigHolder config = ConfigManager.get(modId);
         if (config == null) {
-            return new net.minecraft.client.gui.screen.TitleScreen(); // Placeholder for a proper error screen
+            return new net.minecraft.client.gui.screen.TitleScreen();
         }
 
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
                 .setTitle(Text.literal(modId + " Configuration"));
 
-        // Save callback
         builder.setSavingRunnable(() -> {
             ConfigManager.save(modId);
         });
@@ -32,50 +37,77 @@ public class ClothConfigScreenBuilder {
         ConfigCategory general = builder.getOrCreateCategory(Text.literal("General"));
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-        // Use reflection to automatically create entries for each field in the config
+        // Use reflection to automatically create entries for each field
         for (Field field : config.getClass().getDeclaredFields()) {
             field.setAccessible(true);
+
+            if (HIDDEN_FIELDS.contains(field.getName())) {
+                continue;
+            }
+
             Optional<Comment> comment = Optional.ofNullable(field.getAnnotation(Comment.class));
 
             try {
-                // Add a text input for String fields
                 if (field.getType() == String.class) {
-                    general.addEntry(entryBuilder.startStrField(Text.literal(field.getName()), (String) field.get(config))
-                            .setDefaultValue((String) field.get(config)) // Default value for reset button
-                            .setTooltip(comment.map(c -> new Text[]{Text.of(c.value())})) // Use @Comment for tooltip
-                            .setSaveConsumer(newValue -> setField(field, config, newValue)) // Update the field
-                            .build());
-                }
-                // Add a number input for Integer fields
-                else if (field.getType() == int.class) {
-                    general.addEntry(entryBuilder.startIntField(Text.literal(field.getName()), (int) field.get(config))
+                    general.addEntry(
+                            entryBuilder
+                                    .startStrField(Text.literal(formatFieldName(field.getName())),
+                                            (String) field.get(config))
+                                    .setDefaultValue((String) field.get(config))
+                                    .setTooltip(comment.map(c -> new Text[] { Text.of(c.value()) }))
+                                    .setSaveConsumer(newValue -> setField(field, config, newValue))
+                                    .build());
+                } else if (field.getType() == int.class) {
+                    general.addEntry(entryBuilder
+                            .startIntField(Text.literal(formatFieldName(field.getName())), (int) field.get(config))
                             .setDefaultValue((int) field.get(config))
-                            .setTooltip(comment.map(c -> new Text[]{Text.of(c.value())}))
+                            .setTooltip(comment.map(c -> new Text[] { Text.of(c.value()) }))
                             .setSaveConsumer(newValue -> setField(field, config, newValue))
                             .build());
-                }
-                // Add a checkbox for boolean fields
-                else if (field.getType() == boolean.class) {
-                    general.addEntry(entryBuilder.startBooleanToggle(Text.literal(field.getName()), (boolean) field.get(config))
-                            .setDefaultValue((boolean) field.get(config))
-                            .setTooltip(comment.map(c -> new Text[]{Text.of(c.value())}))
-                            .setSaveConsumer(newValue -> setField(field, config, newValue))
-                            .build());
-                }
-                // *** YENİ EKLENEN KISIM: Enum'lar için dropdown menüsü ***
-                else if (field.getType().isEnum()) {
-                    general.addEntry(entryBuilder.startEnumSelector(Text.literal(field.getName()), (Class<Enum>) field.getType(), (Enum) field.get(config))
+                } else if (field.getType() == boolean.class) {
+                    general.addEntry(
+                            entryBuilder
+                                    .startBooleanToggle(Text.literal(formatFieldName(field.getName())),
+                                            (boolean) field.get(config))
+                                    .setDefaultValue((boolean) field.get(config))
+                                    .setTooltip(comment.map(c -> new Text[] { Text.of(c.value()) }))
+                                    .setSaveConsumer(newValue -> setField(field, config, newValue))
+                                    .build());
+                } else if (field.getType().isEnum()) {
+                    general.addEntry(entryBuilder
+                            .startEnumSelector(Text.literal(formatFieldName(field.getName())),
+                                    (Class<Enum>) field.getType(),
+                                    (Enum) field.get(config))
                             .setDefaultValue((Enum) field.get(config))
-                            .setTooltip(comment.map(c -> new Text[]{Text.of(c.value())}))
+                            .setTooltip(comment.map(c -> new Text[] { Text.of(c.value()) }))
                             .setSaveConsumer(newValue -> setField(field, config, newValue))
                             .build());
+                }
+
+                // Inject the button right after the "enabled" field
+                if (field.getName().equals("enabled")) {
+                    general.addEntry(new ButtonListEntry(
+                            Text.literal("Reposition HUD"),
+                            Text.literal("Reposition"),
+                            () -> {
+                                MinecraftClient mc = MinecraftClient.getInstance();
+                                Screen configScreen = mc.currentScreen;
+                                mc.execute(() -> mc.setScreen(new HudPositionScreen(configScreen)));
+                            }));
                 }
 
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
+
         return builder.build();
+    }
+
+    private static String formatFieldName(String name) {
+        if (name == null || name.isEmpty())
+            return name;
+        return Character.toUpperCase(name.charAt(0)) + name.substring(1).replaceAll("([A-Z])", " $1");
     }
 
     private static void setField(Field field, Object object, Object value) {

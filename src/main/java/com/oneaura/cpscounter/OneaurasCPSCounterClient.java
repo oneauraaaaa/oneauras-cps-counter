@@ -54,10 +54,9 @@ public class OneaurasCPSCounterClient implements ClientModInitializer {
         String textToRender = leftCPS + " | " + rightCPS + config.labelText;
 
         int textWidth = client.textRenderer.getWidth(textToRender);
-        int padding = config.padding;
 
-        int x = config.hudX + padding;
-        int y = config.hudY + padding;
+        int x = config.hudX;
+        int y = config.hudY;
 
         switch (config.textStyle) {
             case BOLD:

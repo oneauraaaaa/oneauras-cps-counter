@@ -36,9 +36,6 @@ public class CPSConfig extends ConfigHolder {
     @Comment("The Color And Opacity Of The Background As A Hex Code (e.g., 80000000 For Semi-Transparent Black).")
     public String backgroundColor = "80000000";
 
-    @Comment("The Padding (Space) Between The Text And The Edge Of The Screen, In Pixels.")
-    public int padding = 5;
-
     @Comment("The Corner Radius For The Background, In Pixels. Set To 0 For Sharp Corners.")
     public int backgroundCornerRadius = 0;
 }

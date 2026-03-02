@@ -58,9 +58,8 @@ public class HudPositionScreen extends Screen {
         if (mouseDown) {
             if (!dragging) {
                 // Check if mouseDown started on the HUD element
-                int padding = config.padding;
-                int hx = config.hudX + padding;
-                int hy = config.hudY + padding;
+                int hx = config.hudX;
+                int hy = config.hudY;
 
                 String sampleText = "0 | 0" + config.labelText;
                 int tw = this.textRenderer.getWidth(sampleText);

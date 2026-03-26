@@ -19,8 +19,6 @@ CPS Counter for the latest versions of Minecraft with very customizable features
 ## Disclaimer
 
 This plugin is licensed under the **[MIT License](https://github.com/oneauraaa/oneauras-cps-counter)**.
-
-Versions below 1.21.8 are not supported and don't have all the features.
 </div>
 
 

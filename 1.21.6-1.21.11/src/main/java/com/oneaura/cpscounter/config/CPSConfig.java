@@ -5,9 +5,17 @@ import com.oneaura.cpscounter.configlib.Comment;
 import com.oneaura.cpscounter.configlib.ConfigHolder;
 
 public class CPSConfig extends ConfigHolder {
+    public enum DisplayMode {
+        BOTH,
+        LEFT,
+        RIGHT
+    }
 
     @Comment("Enable Or Disable The CPS Counter On The Screen.")
     public boolean enabled = true;
+
+    @Comment("Choose what click values are rendered: BOTH, LEFT, or RIGHT.")
+    public DisplayMode displayMode = DisplayMode.BOTH;
 
     @Comment("The X Position Of The Counter On The Screen, In Pixels.")
     public int hudX = 5;

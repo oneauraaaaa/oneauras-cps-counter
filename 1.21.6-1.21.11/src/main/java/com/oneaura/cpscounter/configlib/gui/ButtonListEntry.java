@@ -10,6 +10,7 @@ import net.minecraft.text.Text;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * A custom Cloth Config entry that displays a label on the left and a clickable
@@ -18,10 +19,16 @@ import java.util.Optional;
 public class ButtonListEntry extends AbstractConfigListEntry<Object> {
 
     private final ButtonWidget buttonWidget;
+    private final Supplier<Text> labelSupplier;
 
     public ButtonListEntry(Text fieldName, Text buttonText, Runnable onClick) {
+        this(fieldName, () -> buttonText, onClick);
+    }
+
+    public ButtonListEntry(Text fieldName, Supplier<Text> buttonTextSupplier, Runnable onClick) {
         super(fieldName, false);
-        this.buttonWidget = ButtonWidget.builder(buttonText, btn -> onClick.run())
+        this.labelSupplier = buttonTextSupplier;
+        this.buttonWidget = ButtonWidget.builder(buttonTextSupplier.get(), btn -> onClick.run())
                 .dimensions(0, 0, 150, 20)
                 .build();
     }
@@ -45,6 +52,7 @@ public class ButtonListEntry extends AbstractConfigListEntry<Object> {
     public void render(DrawContext drawContext, int index, int y, int x, int entryWidth, int entryHeight, int mouseX,
             int mouseY, boolean isHovered, float delta) {
         super.render(drawContext, index, y, x, entryWidth, entryHeight, mouseX, mouseY, isHovered, delta);
+        this.buttonWidget.setMessage(this.labelSupplier.get());
 
         // Position the button on the right side of the entry
         this.buttonWidget.setX(x + entryWidth - 150);

@@ -1,5 +1,6 @@
 package com.oneaura.cpscounter.configlib.gui;
 
+import com.oneaura.cpscounter.config.CPSConfig;
 import com.oneaura.cpscounter.config.HudPositionScreen;
 import com.oneaura.cpscounter.configlib.Comment;
 import com.oneaura.cpscounter.configlib.ConfigHolder;
@@ -18,7 +19,7 @@ import java.util.Set;
 public class ClothConfigScreenBuilder {
 
     // Fields managed by the drag screen — hidden from normal config entries
-    private static final Set<String> HIDDEN_FIELDS = Set.of("hudX", "hudY");
+    private static final Set<String> HIDDEN_FIELDS = Set.of("hudX", "hudY", "displayMode");
 
     public static Screen create(Screen parent, String modId) {
         ConfigHolder config = ConfigManager.get(modId);
@@ -87,6 +88,14 @@ public class ClothConfigScreenBuilder {
                 // Inject the button right after the "enabled" field
                 if (field.getName().equals("enabled")) {
                     general.addEntry(new ButtonListEntry(
+                            Text.literal("Display Mode"),
+                            () -> Text.literal("Mode: " + ((CPSConfig) config).displayMode.name()),
+                            () -> {
+                                CPSConfig cpsConfig = (CPSConfig) config;
+                                cpsConfig.displayMode = nextDisplayMode(cpsConfig.displayMode);
+                            }));
+
+                    general.addEntry(new ButtonListEntry(
                             Text.literal("Reposition HUD"),
                             Text.literal("Reposition"),
                             () -> {
@@ -102,6 +111,14 @@ public class ClothConfigScreenBuilder {
         }
 
         return builder.build();
+    }
+
+    private static CPSConfig.DisplayMode nextDisplayMode(CPSConfig.DisplayMode current) {
+        return switch (current) {
+            case BOTH -> CPSConfig.DisplayMode.LEFT;
+            case LEFT -> CPSConfig.DisplayMode.RIGHT;
+            case RIGHT -> CPSConfig.DisplayMode.BOTH;
+        };
     }
 
     private static String formatFieldName(String name) {

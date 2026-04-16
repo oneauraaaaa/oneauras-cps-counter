@@ -51,7 +51,11 @@ public class OneaurasCPSCounterClient implements ClientModInitializer {
     public static void renderCpsHud(DrawContext drawContext, MinecraftClient client) {
         int leftCPS = CPSManager.getLeftCPS();
         int rightCPS = CPSManager.getRightCPS();
-        String textToRender = leftCPS + " | " + rightCPS + config.labelText;
+        String textToRender = switch (config.displayMode) {
+            case BOTH -> leftCPS + " | " + rightCPS + config.labelText;
+            case LEFT -> leftCPS + config.labelText;
+            case RIGHT -> rightCPS + config.labelText;
+        };
 
         int textWidth = client.textRenderer.getWidth(textToRender);
 

@@ -1,0 +1,87 @@
+name: release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build-legacy:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v6
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Build legacy jar
+        working-directory: 1.21.6-1.21.11
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
+
+      - name: Upload legacy release jar
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-legacy
+          path: 1.21.6-1.21.11/build/libs/oneauras-cps-counter-v*-v1.21.6-1.21.11.jar
+
+  build-26:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v6
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          java-version: "25"
+          distribution: "microsoft"
+
+      - name: Build 26.1 jar
+        working-directory: 26.1
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
+
+      - name: Upload 26.1 release jar
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-26
+          path: 26.1/build/libs/oneauras-cps-counter-v*-26.1.jar
+
+  create-release:
+    runs-on: ubuntu-24.04
+    needs: [build-legacy, build-26]
+    permissions:
+      contents: write
+    steps:
+      - name: Download legacy artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: release-legacy
+          path: dist
+
+      - name: Download 26.1 artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: release-26
+          path: dist
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          files: dist/*.jar
+          generate_release_notes: true

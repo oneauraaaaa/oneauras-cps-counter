@@ -51,7 +51,7 @@ java {
 
 jar {
 	inputs.property "archivesName", project.base.archivesName
-	archiveFileName = "oneauras-cps-counter-v${project.version}-v1.21.6-1.21.11.jar"
+	archiveFileName = "oneauras-cps-counter-v${project.version}-1.21.6-1.21.11.jar"
 
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties.archivesName}"}
@@ -59,7 +59,7 @@ jar {
 }
 
 tasks.named("remapJar") {
-	archiveFileName = "oneauras-cps-counter-v${project.version}-v1.21.6-1.21.11.jar"
+	archiveFileName = "oneauras-cps-counter-v${project.version}-1.21.6-1.21.11.jar"
 }
 
 // configure the maven publication

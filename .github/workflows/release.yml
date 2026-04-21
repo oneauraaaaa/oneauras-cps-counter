@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: release-legacy
-          path: 1.21.6-1.21.11/build/libs/oneauras-cps-counter-v*-v1.21.6-1.21.11.jar
+          path: 1.21.6-1.21.11/build/libs/oneauras-cps-counter-v*-1.21.6-1.21.11.jar
 
   build-26:
     runs-on: ubuntu-24.04

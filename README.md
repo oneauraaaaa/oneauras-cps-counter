@@ -25,5 +25,5 @@ cd 26.1
 
 ## Jar naming
 
-- Legacy output: `oneauras-cps-counter-v<mod_version>-v1.21.6-1.21.11.jar`
+- Legacy output: `oneauras-cps-counter-v<mod_version>-1.21.6-1.21.11.jar`
 - 26.1 output: `oneauras-cps-counter-v<mod_version>-26.1.jar`
